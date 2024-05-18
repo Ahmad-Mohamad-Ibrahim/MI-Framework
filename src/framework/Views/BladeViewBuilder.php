@@ -9,7 +9,7 @@ class BladeViewBuilder implements ViewBuilder
 {
     private $blade;
     private function createViewsDirIfNotExists() {
-        if(!is_dir($_ENV['BLADE_TEMPLATES_DIR']) ) {
+        if(! is_dir(Helpers::getAbsolutePath($_ENV['BLADE_TEMPLATES_DIR'])) ) {
             mkdir($_ENV['BLADE_TEMPLATES_DIR'], 0777, true);
         }
     } 
