@@ -1,0 +1,23 @@
+1. Arguments should be taken up to the '/'
+    (for example /user/{id} should match this => /user/1, but not this /user/1/2)
+2. Database
+3. Model
+4. Session Management
+5. Add twig engine
+
+
+important : the template engine code needs some error handling
+
+Issues
+1. this url = /user/1/comment/4 
+matches both :
+    /user/{userId}/comment/{commentId} ok
+    /user/{id} shouldn't match this
+(Fixed)
+
+2. Implementing a templating engine
+    a. I need some way to be able to change between template engines
+
+    An idea is a (ViewFactory) to create the view and maybe output the response
+
+    note that the options for TWIG aren't the whole options

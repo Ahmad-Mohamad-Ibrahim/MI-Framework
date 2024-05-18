@@ -45,9 +45,11 @@ abstract class Route
 
     public function middleware(string $name): Route
     {
-        $middleware = new Middleware($this, $name); // will take this
-        // TODO: some how I need to tell the router about this change
-        // The router should call the handle on the last middleware assigned
+        // instantiating a concrete Decorator of name
+        $middleware = new (Middleware::$MIDDLEWARE_NAMESPACE . "\\$name")($this, $name); // will take this
+
+        // notify the Router
+        Router::getInstance()->setMiddleware($middleware);
         return $middleware;
     }
 }

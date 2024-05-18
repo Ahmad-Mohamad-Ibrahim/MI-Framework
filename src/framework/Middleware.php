@@ -4,35 +4,30 @@ namespace Mi\Framework;
 
 /**
  * Class Middleware (a decorator of HttpRequest)
- * 
+ * This class is meant to be sub-classed to create middleware 
  */
 class Middleware extends Route {
-    public static $MIDDLEWARE_PATH = "Ahmedmi\\Ecommerse\\Middelwares"; 
-    public $route;
+    public static $MIDDLEWARE_NAMESPACE = "Mi\\Framework\\Middlewares"; 
+    private $route;
+
+    /**
+     * Setter for the middleware route
+     */
+    public function setRoute(Route $route) {
+        $this->route = $route;
+    }
 
     // this is decorator for HttpRequest
 
     public function __construct(Route $route , string $name) {
-        $this->callback = array(self::$MIDDLEWARE_PATH . "\\{$name}::class" , "handle");
+        $this->callback = array(get_class($this) , "handle");
         $this->pattern = $route->getPattern();
         $this->requestMethod = $route->getrequestMethod();
         $this->route = $route;
     }
 
-    public function handle(array $params) {
-        // handle the a request coming to a Route with this middleware
-        
+    public function handle(array $params) {   
         // then handle the route 
         $this->route->handle($params);
-    }
-
-    public function middleware(string $name): Route
-    {
-        $middleware = new Middleware($this, $name); // will take this
-        // TODO: some how I need to tell the router about this change
-        // The router should call the handle on the last middleware assigned
-        // notify the Router
-        Router::getInstance()->setMiddleware($this);
-        return $middleware;
     }
 }

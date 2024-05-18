@@ -23,7 +23,8 @@ class HttpRoute extends Route
         // call the callback with the params
         // check type of $callback
         if(is_callable($this->callback)) {
-            call_user_func_array($this->callback, array(Request::getInstance(), ...$params));
+            // Echo what ever returned by the function
+            echo call_user_func_array($this->callback, array(Request::getInstance(), ...$params));
         } else if(gettype($this->callback) == 'array') {
             // [App\Controllers\UserController::class, 'index']
             // call_user_func_array($this->callback[0], array_merge($this->callback[1], $params));
@@ -31,7 +32,7 @@ class HttpRoute extends Route
             if(class_exists($this->callback[0])) {
                 // only in php you can do that
                 $obj = new $this->callback[0];
-                $obj->$this->callback[1](Request::getInstance(), $params);
+                echo $obj->$this->callback[1](Request::getInstance(), ...$params);
             }
         }
 

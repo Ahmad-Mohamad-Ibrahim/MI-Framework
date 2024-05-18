@@ -43,18 +43,36 @@ class Router
         $uri = $req->getUrl();
         // loop through all the routes and handle them (some how)
         // if there is a match, call the handle method
+        $numberHandled = 0;
         foreach ($this->routes[$requestMethod] as $route) {
             $is_match = $this->patternMatch($route->getPattern(), $uri, $matches, PREG_OFFSET_CAPTURE);
             // find paramerters
             $matches = array_splice($matches, 1);
+
+            // A partail match (we will consider it not a match)
+            // so /user/1/4 won't match /user/{id}
+            if(isset($matches[0]) && str_contains($matches[0][0], '/')) {
+                // not a match
+                continue;  
+            }
             $params = array_map(function ($match, $index) use ($matches) {
-                // kind does give all I need
+
+                // if for example /user/1/2 and the pattern is /user/{id} 
+                // get the first id ==> 1
+                if(str_contains($match[0], '/')) {
+                    return explode('/', $match[0])[0];  
+                }
                 return trim($match[0], '/');
             }, $matches, array_keys($matches));
 
             if ($is_match) {
                 $route->handle($params);
+                $numberHandled++;
             }
+        }
+
+        if($numberHandled <= 0) {
+            echo Helpers::abort();
         }
     }
 
@@ -74,6 +92,8 @@ class Router
         foreach ($this->routes[$middleware->getrequestMethod()] as $ind => $route) {
             // look for a match for the middleware pattern
             if ($route->getPattern() === $middleware->getPattern()) {
+                // set the middleware route
+                $middleware->setRoute($this->routes[$middleware->getrequestMethod()][$ind]);
                 // replace the httpRoute/middleware with the new middleware
                 $this->routes[$middleware->getrequestMethod()][$ind] = $middleware;
             }
