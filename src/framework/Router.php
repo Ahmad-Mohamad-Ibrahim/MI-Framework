@@ -51,16 +51,16 @@ class Router
 
             // A partail match (we will consider it not a match)
             // so /user/1/4 won't match /user/{id}
-            if(isset($matches[0]) && str_contains($matches[0][0], '/')) {
+            if (isset($matches[0]) && str_contains($matches[0][0], '/')) {
                 // not a match
-                continue;  
+                continue;
             }
             $params = array_map(function ($match, $index) use ($matches) {
 
                 // if for example /user/1/2 and the pattern is /user/{id} 
                 // get the first id ==> 1
-                if(str_contains($match[0], '/')) {
-                    return explode('/', $match[0])[0];  
+                if (str_contains($match[0], '/')) {
+                    return explode('/', $match[0])[0];
                 }
                 return trim($match[0], '/');
             }, $matches, array_keys($matches));
@@ -71,7 +71,7 @@ class Router
             }
         }
 
-        if($numberHandled <= 0) {
+        if ($numberHandled <= 0) {
             echo Helpers::abort();
         }
     }
@@ -86,6 +86,12 @@ class Router
     }
 
 
+    /**
+     * Sets a middleware for a specific route.
+     *
+     * @param Middleware $middleware The middleware to be set.
+     * @return void
+     */
     public function setMiddleware(Middleware $middleware)
     {
         // loop through the routes with the method from middleware

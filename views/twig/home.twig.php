@@ -7,5 +7,6 @@
 </head>
 <body>
     <h1>Welcome to Home My name is {{ name }}</h1>
+    <h2>I'm Authenticated</h2>
 </body>
 </html>

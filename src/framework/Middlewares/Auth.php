@@ -18,7 +18,7 @@ class Auth extends Middleware
         }
 
         // call the next middleware or the handle()
-        parent::handle($params);
+        $this->route->handle($params);
 
     }
 }

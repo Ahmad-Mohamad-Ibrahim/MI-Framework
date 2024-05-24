@@ -37,9 +37,11 @@ class Helpers
     }
 
     static function view($templateName, array $arguments = null) {
+
         if($_ENV['TEMPLATE_ENGINE'] == 'twig') {
             $twig = new TwigViewBuilder();
-            return $twig->render($templateName, $arguments);
+            return $twig->render($templateName . '.twig.php', $arguments); // twig requires .twig.php
+
         } else if($_ENV['TEMPLATE_ENGINE'] == 'blade') {
             $blade = new BladeViewBuilder();
             return $blade->render($templateName, $arguments);

@@ -18,17 +18,18 @@ use Mi\Framework\Helpers;
 // create new app
 $app = new App();
 
-$app->router->get('/' , function(Mi\Framework\Request $request) 
-{ 
-    // return Helpers::view('home.twig.php', ['name' => 'Ahmed']); 
-    return Helpers::view('home', ['name' => 'Ahmed']); // note only home
-});
+// $app->router->get('/' , function(Mi\Framework\Request $request) 
+// { 
+//     // return Helpers::view('home.twig.php', ['name' => 'Ahmed']); 
+//     return Helpers::view('home', ['name' => 'Ahmed']); // note only home
+// });
 
 // matches http://localhost:8888/user/1/ahmed
-// $app->router->get('/user/{id}/{name}' , function(Mi\Framework\Request $request, $id, $name) 
-// { 
-//     return "user {$name} with {$id}";
-// })->middleware('Auth');
+$app->router->get('/' , function(Mi\Framework\Request $request) 
+{ 
+    return Helpers::view('home', ['name' => 'Ahmed']); // note only home
+})->middleware('Auth');
+
 
 // // matches http://localhost:8888/user/1 not the above
 // $app->router->get('/user/{id}' , function(Mi\Framework\Request $request, $id) 
